@@ -53,7 +53,6 @@ end
 
 function Queue:pinsert(value, fcomp)
 	print('P INSERTING -----------')
-	print('fcomp', fcomp)
 	tabutils.binsert(self, value, fcomp)
 	self.last = self.last + 1;
 end
@@ -70,13 +69,14 @@ end
 function Queue:dequeue(value)
 	-- return self.MyList:PopLeft()
 	local first = self.first
+	print('FIRST ', first)
 
 	if first > self.last then
 		return nil, "list is empty"
 	end
-
 	print('/////////////////////////// value index dequeued', first)
 	local value = self[first]
+	print(value.Priority, '~~~~~~~~~~~~~~~~~~~~ priority')
 	self[first] = nil        -- to allow garbage collection
 	self.first = first + 1
 

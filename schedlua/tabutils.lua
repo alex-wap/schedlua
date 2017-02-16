@@ -44,7 +44,7 @@ local function getIndex(t, value, fcomp)
   print('GET INDEX ------------------')
    local fcomp = fcomp or fcomp_default
 
-   local iStart = 1;
+   local iStart = t.first;
    local iEnd = #t;
    local iMid = 1;
    local iState = 0;
@@ -54,9 +54,13 @@ local function getIndex(t, value, fcomp)
       iMid = floor( (iStart+iEnd)/2 );
 
       -- compare
-      if t[iMid].Priority == nil then
-        t[iMid].Priority = 0
+      -- if t[iMid].Priority == nil then
+      --   t[iMid].Priority = 0
+      -- end
+      if t[iMid] == nil then
+        do break end
       end
+
       if fcomp( value,t[iMid] ) then
             iEnd = iMid - 1;
             iState = 0;

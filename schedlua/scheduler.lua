@@ -94,12 +94,12 @@ end
 local function priority_comp(a, b)
 	print(a, 'a ----------')
 	print(b, 'b ----------')
-	if a.Priority == nil then
-		a.Priority = 0
-	end
-	if b.Priority == nil then
-		a.Priority = 0
-	end
+	-- if a.Priority == nil then
+	-- 	a.Priority = 0
+	-- end
+	-- if b.Priority == nil then
+	-- 	a.Priority = 0
+	-- end
 	return a.Priority < b.Priority
 	end
 
@@ -112,7 +112,6 @@ local function priority_comp(a, b)
 function Scheduler.scheduleTask(self, task, params, priority)
 	print('SCHEDULING TASK --------------')
 
-	print(priority, "priorities ")
 	params = params or {}
 
 	if not task then
@@ -128,10 +127,28 @@ function Scheduler.scheduleTask(self, task, params, priority)
 	-- which should not be subject to the same scheduling
 	-- as user code tasks
 	for k, v in pairs(self.TasksReadyToRun) do
-		print('k and v in tasks', k, v)
+		print('k and v in tasks PRE INSERT', k, v)
+		if type(v) == 'table' then
+			for key, val in pairs(v) do
+				if key == 'Priority' then
+					print('key and value in task', key, val)
+				end
+			end
+		end
 	end
+	print('TASK NUMBER', task)
+	print('PRIORITY', priority)
 	self.TasksReadyToRun:pinsert(task, priority_comp);
-
+	for k, v in pairs(self.TasksReadyToRun) do
+		print('k and v in tasks POST INSERT', k, v)
+		if type(v) == 'table' then
+			for key, val in pairs(v) do
+				if key == 'Priority' then
+					print('key and value in task', key, val)
+				end
+			end
+		end
+	end
 	-- if task.Priority == 0 then
 	-- 	self.TasksReadyToRun:pushFront(task);
 	-- else
@@ -163,7 +180,7 @@ function Scheduler.step(self)
 
 	-- If no fiber in ready queue, then just return
 	if task == nil then
-		--print("Scheduler.step: NO TASK")
+		-- print("Scheduler.step: NO TASK")
 		return true
 	end
 
