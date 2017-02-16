@@ -92,6 +92,7 @@ end
 	Task Handling
 --]]
 local function priority_comp( a,b )
+	print ('PRIORITY COMP --------')
    return a.Priority < b.Priority
 end
 
@@ -102,12 +103,15 @@ end
 -- The 'params' is a table of parameters which will be passed to the function
 -- when it's ready to run.
 function Scheduler.scheduleTask(self, task, params, priority)
+	print('SCHEDULING TASK --------------')
 	--print("Scheduler.scheduleTask: ", task, params)
 	params = params or {}
 
 	if not task then
 		return false, "no task specified"
 	end
+
+	print(params);
 
 	task:setParams(params);
 
@@ -117,12 +121,12 @@ function Scheduler.scheduleTask(self, task, params, priority)
 	-- as user code tasks
 	self.TasksReadyToRun:pinsert(task, priority_comp);
 
-	-- 
+	--
 	-- if priority == 0 then
 	-- 	self.TasksReadyToRun:pushFront(task);
 	-- else
 	-- 	self.TasksReadyToRun:enqueue(task);
-	end
+	-- end
 
 	task.state = "readytorun"
 

@@ -23,7 +23,7 @@ local function compareDueTime(task1, task2)
 	if task1.DueTime < task2.DueTime then
 		return true
 	end
-	
+
 	return false;
 end
 
@@ -41,13 +41,13 @@ function waitUntilTime(atime)
 	waitForSignal(signalName);
 end
 
--- suspend the current task for the 
+-- suspend the current task for the
 -- specified number of milliseconds
 local function sleep(millis)
 	-- figure out the time in the future
 	local currentTime = SWatch:seconds();
 	local futureTime = currentTime + (millis / 1000);
-	
+
 	return waitUntilTime(futureTime);
 end
 
@@ -58,7 +58,6 @@ local function delay(millis, func)
 		sleep(millis)
 		func();
 	end
-
 	return spawn(closure)
 end
 
@@ -79,13 +78,13 @@ end
 -- if any of them need to be signaled to wakeup
 local function taskReadyToRun()
 	local currentTime = SWatch:seconds();
-	
+
 	-- traverse through the fibers that are waiting
 	-- on time
 	local nAwaiting = #SignalsWaitingForTime;
 
 	for i=1,nAwaiting do
-		local task = SignalsWaitingForTime[1]; 
+		local task = SignalsWaitingForTime[1];
 		if not task then
 			return false;
 		end

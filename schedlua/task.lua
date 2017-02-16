@@ -16,17 +16,24 @@ local Task_mt = {
 
 function Task.init(self, aroutine, ...)
 
+	print('TASK INIT ---------------')
+
 	local obj = {
-		routine = coroutine.create(aroutine), 
+		routine = coroutine.create(aroutine),
 	}
 	setmetatable(obj, Task_mt);
-	
+
 	obj:setParams({...});
 
 	return obj
 end
 
 function Task.create(self, aroutine, ...)
+	print('aroutine', aroutine)
+	print('TASK CREATE -------------------')
+	for k, v in pairs(self) do
+		print(k, v)
+	end
 	-- The 'aroutine' should be something that is callable
 	-- either a function, or a table with a meta '__call'
 	-- implementation.  Checking with type == 'function'
@@ -47,6 +54,7 @@ end
 
 
 function Task.setParams(self, params)
+	print('SETTING PARAMS ----------------')
 	self.params = params
 
 	return self;

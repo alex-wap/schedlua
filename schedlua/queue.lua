@@ -1,7 +1,7 @@
 --[[
 Queue
 
-The Queue is a simple data structure that represents a 
+The Queue is a simple data structure that represents a
 first in first out behavior.
 --]]
 local tabutils = require("schedlua.tabutils")
@@ -22,8 +22,8 @@ function Queue.init(self, first, last, name)
 	last = last or 0;
 
 	local obj = {
-		first=first, 
-		last=last, 
+		first=first,
+		last=last,
 		name=name};
 
 	setmetatable(obj, Queue_mt);
@@ -52,6 +52,8 @@ function Queue:pushFront(value)
 end
 
 function Queue:pinsert(value, fcomp)
+	print('P INSERTING -----------')
+	print('fcomp', fcomp)
 	tabutils.binsert(self, value, fcomp)
 	self.last = self.last + 1;
 end
@@ -72,19 +74,19 @@ function Queue:dequeue(value)
 	if first > self.last then
 		return nil, "list is empty"
 	end
-	
+
 	local value = self[first]
 	self[first] = nil        -- to allow garbage collection
 	self.first = first + 1
 
-	return value	
+	return value
 end
 
 function Queue:length()
 	return self.last - self.first+1
 end
 
--- Returns an iterator over all the current 
+-- Returns an iterator over all the current
 -- values in the queue
 function Queue:Entries(func, param)
 	local starting = self.first-1;

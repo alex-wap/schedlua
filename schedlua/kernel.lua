@@ -23,6 +23,7 @@ local Kernel = Kernel;
 
 
 local function getNewTaskID()
+	print('GETTING TASK ID ---------------')
 	Kernel.TaskID = Kernel.TaskID + 1;
 	return Kernel.TaskID;
 end
@@ -37,18 +38,28 @@ end
 
 
 local function inMainTask()
-	return coroutine.running() == nil; 
+	return coroutine.running() == nil;
 end
 
-local function coop(priority, func, ...)
-	local task = Task(func, ...)
+local function coop(priority, table, ...)
+	print('COOP ------------------')
+	local task = Task(table, ...)
 	task.TaskID = getNewTaskID();
 	task.Priority = priority;
 	return Kernel.Scheduler:scheduleTask(task, {...});
 end
 
-local function spawn(func, ...)
-	return coop(100, func, ...);
+-- local function spawn(func, ...)
+-- 	return coop(100, func, ...);
+-- end
+
+local function spawn(priority, func, ...)
+	print('SPAWNING -------------------------------')
+	-- for k, v in pairs(table) do
+	-- 	print('spawn', k, v)
+	-- end
+	-- print('type of task', type(func))
+	return coop(priority, func, ...);
 end
 
 local function yield(...)
@@ -133,7 +144,7 @@ local function run(func, ...)
 	end
 
 	while (Kernel.ContinueRunning) do
-		Kernel.Scheduler:step();		
+		Kernel.Scheduler:step();
 	end
 end
 
@@ -165,7 +176,7 @@ local function globalize(tbl)
 	return tbl;
 end
 
--- We globalize before including the extras because they will 
+-- We globalize before including the extras because they will
 -- assume the global state is already set, and spawning and signaling
 -- are already available.
 
@@ -176,4 +187,3 @@ local Predicate = require("schedlua.predicate")
 local Alarm = require("schedlua.alarm")
 
 return globalize;
-
