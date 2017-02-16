@@ -3,9 +3,6 @@ package.path = package.path..";../?.lua"
 
 local Kernel = require("schedlua.kernel")
 
-
-
-
 local function numbers(ending)
 	local idx = 0;
 	local function fred()
@@ -19,31 +16,30 @@ local function numbers(ending)
 	return fred;
 end
 
-local task1 = {
-  execute = function()
-    print("first task, first line")
-  	yield();
-  	print("first task, second line")
-    end
-}
+local function task1()
+	print("first task, first line")
+	yield();
+	print("first task, second line")
+end
 
--- local function task2()
--- 	print("second task, only line")
--- end
---
--- local function counter(name, nCount)
--- 	for num in numbers(nCount) do
--- 		print(name, num);
--- 		yield();
--- 	end
--- 	halt();
--- end
+local function task2()
+	print("second task, only line")
+	halt()
+end
+
+local function counter(name, nCount)
+	for num in numbers(nCount) do
+		print(name, num);
+		yield();
+	end
+	halt();
+end
 
 local function main()
-	-- local t0 = spawn(5, counter, "counter1")
-	spawn(22, task1)
-	-- local t2 = spawn(10, task2)
-	-- local t3 = spawn(7, counter, "counter2")
+	local t0 = coop(1, counter, "counter1", 5)
+	local t1 = coop(22, task1)
+	local t2 = coop(90, task2)
+	local t3 = coop(4, counter, "counter2", 7)
 end
 
 run(main)

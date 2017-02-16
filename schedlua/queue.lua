@@ -75,6 +75,7 @@ function Queue:dequeue(value)
 		return nil, "list is empty"
 	end
 
+	print('/////////////////////////// value index dequeued', first)
 	local value = self[first]
 	self[first] = nil        -- to allow garbage collection
 	self.first = first + 1

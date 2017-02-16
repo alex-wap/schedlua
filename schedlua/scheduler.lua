@@ -91,10 +91,17 @@ end
 --[[
 	Task Handling
 --]]
-local function priority_comp( a,b )
-	print ('PRIORITY COMP --------')
-   return a.Priority < b.Priority
-end
+local function priority_comp(a, b)
+	print(a, 'a ----------')
+	print(b, 'b ----------')
+	if a.Priority == nil then
+		a.Priority = 0
+	end
+	if b.Priority == nil then
+		a.Priority = 0
+	end
+	return a.Priority < b.Priority
+	end
 
 -- put a task on the ready list
 -- the 'task' should be something that can be executed,
@@ -104,7 +111,8 @@ end
 -- when it's ready to run.
 function Scheduler.scheduleTask(self, task, params, priority)
 	print('SCHEDULING TASK --------------')
-	--print("Scheduler.scheduleTask: ", task, params)
+
+	print(priority, "priorities ")
 	params = params or {}
 
 	if not task then
@@ -119,13 +127,16 @@ function Scheduler.scheduleTask(self, task, params, priority)
 	-- but, there are some tasks which are system tasks
 	-- which should not be subject to the same scheduling
 	-- as user code tasks
+	for k, v in pairs(self.TasksReadyToRun) do
+		print('k and v in tasks', k, v)
+	end
 	self.TasksReadyToRun:pinsert(task, priority_comp);
 
-	--
-	-- if priority == 0 then
+	-- if task.Priority == 0 then
 	-- 	self.TasksReadyToRun:pushFront(task);
 	-- else
-	-- 	self.TasksReadyToRun:enqueue(task);
+
+		-- self.TasksReadyToRun:enqueue(task);
 	-- end
 
 	task.state = "readytorun"
@@ -217,6 +228,9 @@ function Scheduler.step(self)
 	-- is if it's state is 'readytorun', otherwise, it will
 	-- stay out of the readytorun list.
 	if task.state == "readytorun" then
+		if task.Priority == nil then
+			task.Priority = 5
+		end
 		self:scheduleTask(task, results);
 	end
 end

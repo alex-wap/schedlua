@@ -38,10 +38,9 @@ local function fcomp_default( a,b )
 end
 
 local function getIndex(t, value, fcomp)
-  print('t !!!!!!!', t)
-  for k, v in pairs(t) do
-  	print('get index values', k, v)
-  end
+  -- for k, v in pairs(t) do
+  -- 	print('get index values', k, v)
+  -- end
   print('GET INDEX ------------------')
    local fcomp = fcomp or fcomp_default
 
@@ -55,6 +54,9 @@ local function getIndex(t, value, fcomp)
       iMid = floor( (iStart+iEnd)/2 );
 
       -- compare
+      if t[iMid].Priority == nil then
+        t[iMid].Priority = 0
+      end
       if fcomp( value,t[iMid] ) then
             iEnd = iMid - 1;
             iState = 0;
@@ -69,6 +71,7 @@ end
 
 local function binsert(tbl, value, fcomp)
   print('B INSERT --------------')
+  print('************** LENGTH OF QUEUE ', #tbl)
    local idx = getIndex(tbl, value, fcomp);
    insert( tbl, idx, value);
 

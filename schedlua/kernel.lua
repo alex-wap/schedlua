@@ -46,20 +46,20 @@ local function coop(priority, table, ...)
 	local task = Task(table, ...)
 	task.TaskID = getNewTaskID();
 	task.Priority = priority;
-	return Kernel.Scheduler:scheduleTask(task, {...});
+	return Kernel.Scheduler:scheduleTask(task, {...}, priority);
 end
 
 -- local function spawn(func, ...)
 -- 	return coop(100, func, ...);
 -- end
 
-local function spawn(priority, func, ...)
+local function spawn(func, ...)
 	print('SPAWNING -------------------------------')
-	-- for k, v in pairs(table) do
+	--  k, v in pairs(table) do
 	-- 	print('spawn', k, v)
 	-- end
 	-- print('type of task', type(func))
-	return coop(priority, func, ...);
+	return coop(100, func, ...);
 end
 
 local function yield(...)
@@ -140,7 +140,7 @@ end
 local function run(func, ...)
 
 	if func ~= nil then
-		spawn(func, ...)
+		coop(0, func, ...)
 	end
 
 	while (Kernel.ContinueRunning) do
